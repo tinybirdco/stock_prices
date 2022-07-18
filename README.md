@@ -1,6 +1,6 @@
 # stock_prices
 
-This repository contains the data project —[datasources](./datasources), and [endpoints](./endpoints)— and [data-generator](./data-generator) scripts for an audit log example of using Tinybird.
+This repository contains the data project —[datasources](./datasources), and [endpoints](./endpoints)— and [data-generator](./data-generator) scripts for creating two charts —a line chart with the average price and a candlesitck one— based on stock prices using Tinybird.
 
 To clone the repository:
 
