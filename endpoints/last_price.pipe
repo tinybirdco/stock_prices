@@ -1,0 +1,37 @@
+TOKEN stock_prices_demo READ
+
+
+DESCRIPTION >
+	Used for the data generator.
+
+
+NODE price_date
+SQL >
+
+    SELECT stock_symbol, argMax(amount, date) price, max(date) ts
+    FROM prices
+    GROUP BY stock_symbol
+
+
+NODE stddev_stock_t
+SQL >
+
+    SELECT toStartOfFiveMinute(date) t, stock_symbol, stddevPop(amount) stddev 
+    FROM prices
+    GROUP BY t, stock_symbol
+
+
+NODE avg_stddev
+SQL >
+
+    SELECT stock_symbol, avg(stddev) stddev FROM stddev_stock_t
+    GROUP BY stock_symbol
+
+
+
+NODE endpoint
+SQL >
+
+    SELECT * FROM price_date JOIN avg_stddev using stock_symbol
+
+

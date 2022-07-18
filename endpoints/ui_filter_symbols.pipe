@@ -1,0 +1,12 @@
+TOKEN stock_prices_demo READ
+
+
+DESCRIPTION >
+	Retrieves the available __stock symbols__ that can be queried.
+
+
+NODE endpoint
+SQL >
+
+    SELECT DISTINCT stock_symbol FROM prices
+    ORDER BY stock_symbol ASC

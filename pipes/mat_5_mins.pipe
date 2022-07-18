@@ -1,0 +1,23 @@
+NODE mat_node
+SQL >
+
+    SELECT
+        toStartOfFiveMinute(date) AS t,
+        stock_symbol,
+        minSimpleState(amount) AS low,
+        maxSimpleState(amount) AS high,
+        argMinState(amount, date) AS open,
+        argMaxState(amount, date) AS close,
+        avgState(amount) AS avg_amount
+    FROM prices
+    GROUP BY
+        t,
+        stock_symbol
+
+TYPE materialized
+DATASOURCE prices_5min_mv
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(t)"
+ENGINE_SORTING_KEY "stock_symbol, t"
+ENGINE_TTL "t + toIntervalDay(365)"
+

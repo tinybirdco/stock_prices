@@ -1,0 +1,7 @@
+SCHEMA >
+    `stock_symbol` String,
+    `currency` LowCardinality(String)
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "tuple()"
+ENGINE_SORTING_KEY "currency,stock_symbol"

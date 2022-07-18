@@ -1,0 +1,28 @@
+TOKEN stock_prices_demo READ
+
+
+DESCRIPTION >
+	Retrieves timestamp __t__, __open__, __close__, __low__, and __high__ prices grouped by 5 mins blocks for a selected _stock_symbol_ and a given _time range_.
+
+Note: this one reads from a Materialized View
+
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT
+          t, 
+          min(low) low, 
+          max(high) high, 
+          argMinMerge(open) open, 
+          argMaxMerge(close) close
+        FROM prices_5min_mv
+        WHERE stock_symbol = {{String(selected_symbol, 'APG:XNYS', description="Stock symbol", required=True)}}
+        AND t 
+          BETWEEN {{DateTime(datetime_start, '2022-07-01 00:00:00', description="first timestamp", required=True)}} 
+            AND {{DateTime(datetime_end, '2022-07-31 23:59:59', description="last timestamp. Format: '2022-07-01 00:00:00'", required=True)}}
+        GROUP BY t, stock_symbol
+        ORDER BY t ASC
+
+

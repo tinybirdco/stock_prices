@@ -1,0 +1,23 @@
+TOKEN stock_prices_demo READ
+
+
+DESCRIPTION >
+	Retrieves timestamp __t__ and average of price __amount__ grouped by 5 mins blocks for a selected _stock_symbol_ and a given _time range_.
+
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT 
+      toStartOfFiveMinute(date) t,
+      round(avg(amount),2) amount
+    FROM prices
+    WHERE stock_symbol = {{String(selected_symbol, 'APG:XNYS', description="Stock symbol", required=True)}}
+    AND date 
+      BETWEEN {{DateTime(datetime_start, '2022-07-01 00:00:00', description="first timestamp", required=True)}} 
+        AND {{DateTime(datetime_end, '2022-07-31 23:59:59', description="last timestamp. Format: '2022-07-01 00:00:00'", required=True)}}
+    GROUP BY t
+    ORDER BY t asc
+
+

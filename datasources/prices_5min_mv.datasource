@@ -1,0 +1,15 @@
+# Data Source created from Pipe 'mat_5_mins'
+
+SCHEMA >
+    `t` DateTime,
+    `stock_symbol` LowCardinality(String),
+    `low` SimpleAggregateFunction(min, Float32),
+    `high` SimpleAggregateFunction(max, Float32),
+    `open` AggregateFunction(argMin, Float32, DateTime),
+    `close` AggregateFunction(argMax, Float32, DateTime),
+    `avg_amount` AggregateFunction(avg, Float32)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(t)"
+ENGINE_SORTING_KEY "stock_symbol, t"
+ENGINE_TTL "t + toIntervalDay(365)"

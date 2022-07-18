@@ -1,0 +1,10 @@
+TOKEN stock_prices_demo APPEND
+
+SCHEMA >
+    `stock_symbol` LowCardinality(String) `json:$.stock_symbol`,
+    `date` DateTime `json:$.date`,
+    `amount` Float32 `json:$.amount`
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYear(date)"
+ENGINE_SORTING_KEY "stock_symbol, date"
